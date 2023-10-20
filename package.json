@@ -9,13 +9,11 @@
   "devDependencies": {
     "eslint": "^8.48.0",
     "prettier": "^3.0.3",
-    "tsconfig": "*",
     "turbo": "latest"
   },
   "name": "s2z",
   "packageManager": "npm@9.6.7",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ]
 }
