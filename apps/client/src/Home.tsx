@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
+import AddPurchase from "./components/home/addPurchase";
 
 export default function Home() {
   return (
     <div>
-      <Button>Click me</Button>
+      <AddPurchase />
     </div>
   );
 }
