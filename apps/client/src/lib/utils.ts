@@ -5,7 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getDateString = (date: Date) => {
+export const getDateString = (date: Date | string) => {
+  if (typeof date === "string") return date;
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
   return `${date.getFullYear()}-${month}-${day}`;

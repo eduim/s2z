@@ -1,5 +1,9 @@
 import { countryCode, simulationMode } from "@/lib/simulator";
-import { countryCodeType, simulationModeType } from "@/types";
+import {
+  countryCodeType,
+  simulationModeType,
+  selectOptionsProps,
+} from "@/types";
 
 import {
   Select,
@@ -9,10 +13,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const SelectOptions = () => {
+const SelectOptions = ({
+  country,
+  changeCountry,
+  mode,
+  changeMode,
+}: selectOptionsProps) => {
   return (
     <div className="flex gap-3">
-      <Select>
+      <Select
+        onValueChange={(value) => changeCountry(value as countryCodeType)}
+        defaultValue={country}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Country" />
         </SelectTrigger>
@@ -26,7 +38,10 @@ const SelectOptions = () => {
           })}
         </SelectContent>
       </Select>
-      <Select>
+      <Select
+        onValueChange={(value) => changeMode(value as simulationModeType)}
+        defaultValue={mode}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Simulation Mode" />
         </SelectTrigger>
