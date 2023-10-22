@@ -37,3 +37,8 @@ export type addPurchaseProps = {
   lastDate: Date;
   addPurchase: (formData: formInputs) => void;
 };
+
+export type purchasesProps = {
+  data: purchaseData[];
+  deletePurchase: (id: string) => void;
+};
