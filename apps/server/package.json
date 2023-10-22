@@ -4,21 +4,31 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
+    "predev": "docker-compose up -d db",
+    "start": "node dist/index.js",
     "build": "tsc",
+    "dev": "nodemon src/index.ts",
     "lint": "eslint ./src/**",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "docker-compose -f docker-compose.test.yml up -d && dotenv -e .env.test -- prisma migrate deploy",
+    "test": "dotenv -e .env.test -- jest -i",
+    "posttest": "docker stop db_test && docker container rm db_test"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.4.2",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "jest": "^29.7.0",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.1",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.20",
+    "@types/jsonwebtoken": "^9.0.4",
     "@types/node": "^20.8.7",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
@@ -26,6 +36,8 @@
     "eslint-plugin-prettier": "^5.0.1",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
+    "prisma": "^5.4.2",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }

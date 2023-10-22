@@ -1,15 +1,16 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import express, { Express, Request, Response } from 'express'
+import { PORT, HOST } from './lib/constants'
 
-dotenv.config();
+const app: Express = express()
 
-const app: Express = express();
-const port = process.env.PORT;
+app.get('/calculate', (_: Request, res: Response) => {
+  res.send('Express + TypeScript Server')
+})
 
-app.get("/", (_: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+app.get('/save', (_: Request, res: Response) => {
+  res.send('Express + TypeScript Server')
+})
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+app.listen(PORT, () => {
+  console.log(`⚡️[server]: Server is running at http://${HOST}:${PORT}`)
+})

@@ -117,7 +117,7 @@
     "baseUrl": ".",
     "paths": {
       "@types": ["./src/types/index.d.ts"],
-      "@utils": ["./src/lib/utils.ts"]
+      "@utils": ["src/lib/simulatorUtils.ts"]
     }
   },
   "include": ["src/**/*"],
