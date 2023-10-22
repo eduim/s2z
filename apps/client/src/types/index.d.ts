@@ -42,3 +42,12 @@ export type purchasesProps = {
   data: purchaseData[];
   deletePurchase: (id: string) => void;
 };
+
+export type graphProps = {
+  data: offSetSeries[] | undefined;
+};
+
+export type offSetSeries = {
+  date: string;
+  total: number;
+};

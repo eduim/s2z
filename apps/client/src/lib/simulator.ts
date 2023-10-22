@@ -1,5 +1,11 @@
 import { purchaseData, simulationModeType } from "@/types";
-import { addDateInterval, parseDateStringToDate } from "./utils";
+import {
+  addDateInterval,
+  parseDateStringToDate,
+  getDateString,
+  unitPonderatedMode,
+  truncateDate,
+} from "./utils";
 
 export const countriesEmissionsPp = {
   US: 15.52,
@@ -37,26 +43,24 @@ export const offsetSimulator = (
   if (data.length === 0) return;
 
   const unitaryCompensation = 28.5;
-
   let offSetCarbonTotal = 0;
-  let prevDate = data[0].date;
-  const offsetDataTimeSeries = [];
+  let currentDate = parseDateStringToDate(data[0].date.toString());
+  const offSetSeries = [];
 
   while (offSetCarbonTotal < consumption) {
-    // offSetCarbonTotal += 50;
-    const currentDate = addDateInterval(prevDate, mode);
-
     // calculate for each purchase offset compensation
     const offSetCarbonCurrentDateBatches = data.map((purchase) => {
       const age =
         currentDate.getFullYear() -
         parseDateStringToDate(purchase.date.toString()).getFullYear();
 
+      if (age < 0) return 0;
+
       let offsetBatch;
       if (age >= 6) {
-        offsetBatch = unitaryCompensation;
+        offsetBatch = unitPonderatedMode(mode, unitaryCompensation);
       } else {
-        offsetBatch = unitaryCompensation * (age / 6);
+        offsetBatch = unitPonderatedMode(mode, unitaryCompensation * (age / 6));
       }
 
       return offsetBatch * purchase.trees;
@@ -72,27 +76,59 @@ export const offsetSimulator = (
 
     offSetCarbonTotal += offSetCarbonCurrentDate;
     // add to time series
-    offsetDataTimeSeries.push({
-      date: currentDate,
-      offsetAccumulated: offSetCarbonTotal,
+    offSetSeries.push({
+      date: getDateString(currentDate),
+      total: offSetCarbonTotal,
     });
-    prevDate = currentDate;
+    currentDate = addDateInterval(currentDate, mode);
   }
 
-  return offsetDataTimeSeries;
+  return offSetSeries;
 };
 
-// export const costsSimulator = (data: purchaseData[]) => {
-//   const costTree = 120;
-//   const maintenanceTree = 12;
+export const costsSimulator = (
+  data: purchaseData[],
+  lengthSeries: number,
+  mode: simulationModeType
+) => {
+  if (lengthSeries === 0) return { costsSeries: [], totalCost: 0 };
 
-//   let totalCost = 0;
-//   let totalMaintenance = 0;
+  let currentDate = parseDateStringToDate(data[0].date.toString());
+  const costsSeries = [];
 
-//   const costDataTimeSeries = data.map((purchase: purchaseData) => {
-//     totalCost = costTree * purchase.trees;
+  const costTree = 120;
+  const maintenanceTree = 12;
+  let totalCost = 0;
 
-//     return {};
-//   });
-//   console.log(data);
-// };
+  for (let i = 0; i < lengthSeries; i++) {
+    const costsCurrentDateBatches = data.map((purchase) => {
+      const isAquistionDate =
+        getDateString(currentDate) === getDateString(purchase.date);
+      const age =
+        currentDate.getFullYear() -
+        parseDateStringToDate(purchase.date.toString()).getFullYear();
+      let cost = 0;
+      if (age === 0 && isAquistionDate) cost = costTree * purchase.trees;
+      if (age > 0) cost = maintenanceTree * purchase.trees;
+      return {
+        date: purchase.date,
+        cost,
+        truncated: getDateString(truncateDate(purchase.date, mode)),
+      };
+    });
+
+    const costsCurrentDate = costsCurrentDateBatches.reduce((acc, current) => {
+      return acc + current.cost;
+    }, 0);
+
+    totalCost += costsCurrentDate;
+
+    costsSeries.push({
+      date: getDateString(currentDate),
+      total: totalCost,
+    });
+    currentDate = addDateInterval(currentDate, mode);
+  }
+
+  return { costsSeries, totalCost };
+};

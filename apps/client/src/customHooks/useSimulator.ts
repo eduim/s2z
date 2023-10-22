@@ -37,13 +37,35 @@ const reducer = (state: simulatorDataType, action: simulatorActionType) => {
   }
 
   if (type === "ADD PURCHASE") {
-    const id = state.data.length.toString();
+    const id = `${state.data.length}.${action.payload.date}.${action.payload.trees}`;
+
+    const dateExists = state.data.filter(
+      (purchase) => purchase.date === action.payload.date
+    );
+
+    let data = [
+      ...state.data,
+      { id, date: action.payload.date, trees: action.payload.trees },
+    ];
+
+    if (dateExists.length !== 0) {
+      data = state.data.map((purchase) => {
+        if (purchase.date !== action.payload.date) return purchase;
+        return {
+          id: purchase.id,
+          date: purchase.date,
+          trees: Math.min(
+            parseInt(purchase.trees.toString()) +
+              parseInt(action.payload.trees),
+            55
+          ),
+        };
+      });
+    }
+
     return {
       ...state,
-      data: [
-        ...state.data,
-        { id, date: action.payload.date, trees: action.payload.trees },
-      ],
+      data,
     };
   }
 

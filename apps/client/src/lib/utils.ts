@@ -42,14 +42,32 @@ export const addDateInterval = (
   return date;
 };
 
-export const unitaryOffSetCompensation = (
+export const unitPonderatedMode = (
   interval: simulationModeType,
-  unitaryOffsetCompensation = 28.5
+  unit: number
 ) => {
   if (interval === "M") {
-    return unitaryOffsetCompensation / 12;
+    return unit / 12;
   } else if (interval === "Q") {
-    return unitaryOffsetCompensation / 4;
+    return unit / 4;
   }
-  return unitaryOffsetCompensation;
+  return unit;
+};
+
+export const truncateDate = (date: Date, interval: simulationModeType) => {
+  const truncatedDate = new Date(date);
+
+  if (interval === "M") {
+    truncatedDate.setDate(1);
+  } else if (interval === "Q") {
+    const quarterMonth = Math.floor(truncatedDate.getMonth() / 3) * 3;
+    truncatedDate.setMonth(quarterMonth);
+    truncatedDate.setDate(1);
+  } else if (interval === "Y") {
+    truncatedDate.setMonth(0);
+    truncatedDate.setDate(1);
+  }
+
+  truncatedDate.setHours(0, 0, 0, 0);
+  return truncatedDate;
 };

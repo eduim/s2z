@@ -1,6 +1,10 @@
 import AddPurchase from "./components/home/addPurchase";
 import useSimulator from "./customHooks/useSimulator";
-import { countriesEmissionsPp, offsetSimulator } from "./lib/simulator";
+import {
+  countriesEmissionsPp,
+  offsetSimulator,
+  costsSimulator,
+} from "./lib/simulator";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import SelectOptions from "./components/home/selectOptions";
 import Purchases from "./components/home/purchases";
@@ -18,7 +22,20 @@ export default function Home() {
   } = useSimulator();
 
   const lastDate = data.length > 0 ? data[data.length - 1].date : new Date();
-  console.log(offsetSimulator(data, 1500, mode));
+  const offSetSeries = offsetSimulator(
+    data,
+    countriesEmissionsPp[country] * 1000,
+    mode
+  );
+
+  let seriesLenght = 0;
+
+  if (offSetSeries) seriesLenght = offSetSeries.length;
+  console.log(offSetSeries);
+  const { costsSeries, totalCost } = costsSimulator(data, seriesLenght, mode);
+
+  console.log(totalCost);
+
   return (
     <>
       <div className="flex justify-between">
@@ -50,7 +67,8 @@ export default function Home() {
           <Purchases data={data} deletePurchase={deletePurchase} />
         </CardContent>
       </Card>
-      <Graph />
+      {offSetSeries && <Graph data={offSetSeries} />}
+      {costsSeries.length > 0 && <Graph data={costsSeries} />}
     </>
   );
 }
