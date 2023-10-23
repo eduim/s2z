@@ -51,7 +51,9 @@ but I did it intecionally to show that I know how to testing, auth, db persistan
 
 - Finish conection Server - Client
 - State feedback handling Client for improve user experience
+- Add more tests cases
 - Auth Client (finish in Server)
+- Use all the endpoints of the server
 - Cache on server and client
 - API integrations
 - Adding more inputs to the simulator
