@@ -40,14 +40,12 @@ export const offsetSimulator = (
   consumption: number,
   mode: simulationModeType
 ) => {
-  if (data.length === 0) return
-
   const unitaryCompensation = 28.5
   let offSetCarbonTotal = 0
   let currentDate = parseDateStringToDate(data[0].date.toString())
   const offSetSeries = []
 
-  while (offSetCarbonTotal < consumption) {
+  while (offSetCarbonTotal < consumption * 1000) {
     // calculate for each purchase offset compensation
     const offSetCarbonCurrentDateBatches = data.map((purchase) => {
       const age =
@@ -91,8 +89,6 @@ export const costsSimulator = (
   lengthSeries: number,
   mode: simulationModeType
 ) => {
-  if (lengthSeries === 0) return { costsSeries: [], totalCost: 0 }
-
   let currentDate = parseDateStringToDate(data[0].date.toString())
   const costsSeries = []
 

@@ -6,8 +6,7 @@ import {
   getUserFromBearerAuth,
   generateToken,
 } from '../lib/auth'
-
-import User from 'src/models/userModel'
+import User from '../models/userModel'
 
 const UsersController = {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -54,7 +53,6 @@ const UsersController = {
       }
 
       const token = generateToken(user.id)
-      console.log(token)
 
       res.setHeader(
         `Set-Cookie`,

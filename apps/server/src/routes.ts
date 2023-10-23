@@ -15,7 +15,9 @@ authRouter.use(userAuthorizationMiddleware)
 authRouter.get('/me', UsersController.me)
 authRouter.get('/users/:id', UsersController.getUserById)
 
-authRouter.post('/posts', SimulationController.createSimulation)
-authRouter.get('/posts', SimulationController.getSimulatioin)
+// include this in auth router when ready auth in client
+router.post('/simulation', SimulationController.createSimulation)
+router.get('/simulation/:id', SimulationController.getSimulatioin)
+router.put('/simulation/:id', SimulationController.updateSimulation)
 
 export { router, authRouter }

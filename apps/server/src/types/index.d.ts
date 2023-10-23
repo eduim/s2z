@@ -31,3 +31,13 @@ declare global {
 interface DecodedToken extends JwtPayload {
   userId: number
 }
+
+export type offSetSeries = {
+  date: string
+  total: number
+}
+
+export type costsSeries = {
+  costsSeries: offSetSeries[]
+  totalCost: number
+}
