@@ -15,12 +15,14 @@ in the case of the `server`. Copy the internal info in `.env` and `.env.test`
 Run the following commands:
 
 ```sh
+# install dependencies
+npm install
+
 # Setup db
 npm run db:dev:setup
 
 # Run services
 npm run dev
-
 ```
 
 Run the tests:
@@ -48,6 +50,7 @@ but I did it intecionally to show that I know how to testing, auth, db persistan
 ## Improvements if I would have time
 
 - Finish conection Server - Client
+- State feedback handling Client for improve user experience
 - Auth Client (finish in Server)
 - Cache on server and client
 - API integrations
