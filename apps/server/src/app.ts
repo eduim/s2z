@@ -22,7 +22,7 @@ function startServer(): Server {
     Logger.info(`[server]: Server is running at http://${HOST}:${PORT}`)
   })
 
-  process.on('SIGTERM', () => {
+  process.on('SIGINT', () => {
     server.close()
   })
   return server

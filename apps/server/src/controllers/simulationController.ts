@@ -42,7 +42,6 @@ const SimulationController = {
           costsSeries
         )
 
-        console.log(simulation)
         res.status(201).json({ simulation })
         return
       }
@@ -51,6 +50,46 @@ const SimulationController = {
       next(e)
     }
   },
+
+  calculateSimulation(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { data, mode, country } = req.body
+
+      if (
+        (data as purchaseData[]) &&
+        (mode as simulationModeType) &&
+        (country as countryCodeType)
+      ) {
+        const offSetSeries: offSetSeries[] = offsetSimulator(
+          data,
+          countriesEmissionsPp[country as countryCodeType],
+          mode
+        )
+
+        const costsSeries: costsSeries = costsSimulator(
+          data,
+          offSetSeries?.length as number,
+          mode
+        )
+
+        console.log(offSetSeries, costsSeries)
+
+        res.status(201).json({
+          simulation: {
+            country,
+            mode,
+            offSet: offSetSeries,
+            costs: costsSeries,
+          },
+        })
+        return
+      }
+      throw new Error('Incorrect data send')
+    } catch (e) {
+      next(e)
+    }
+  },
+
   async getSimulatioin(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params

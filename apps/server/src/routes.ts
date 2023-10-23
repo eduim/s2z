@@ -17,6 +17,7 @@ authRouter.get('/users/:id', UsersController.getUserById)
 
 // include this in auth router when ready auth in client
 router.post('/simulation', SimulationController.createSimulation)
+router.post('/simulation/calculate', SimulationController.calculateSimulation)
 router.get('/simulation/:id', SimulationController.getSimulatioin)
 router.put('/simulation/:id', SimulationController.updateSimulation)
 

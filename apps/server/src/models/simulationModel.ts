@@ -36,7 +36,6 @@ class Simulation {
   }
 
   static async getSimulationById(id: number): Promise<Simulation> {
-    console.log(id)
     const { country, mode, offSet, costs, createdAt } =
       await prisma.simulation.findUniqueOrThrow({
         where: {
