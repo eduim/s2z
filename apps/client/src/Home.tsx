@@ -22,19 +22,18 @@ export default function Home() {
   } = useSimulator();
 
   const lastDate = data.length > 0 ? data[data.length - 1].date : new Date();
+
   const offSetSeries = offsetSimulator(
     data,
-    countriesEmissionsPp[country] * 1000,
+    countriesEmissionsPp[country],
     mode
   );
 
   let seriesLenght = 0;
 
   if (offSetSeries) seriesLenght = offSetSeries.length;
-  console.log(offSetSeries);
-  const { costsSeries, totalCost } = costsSimulator(data, seriesLenght, mode);
 
-  console.log(totalCost);
+  const { costsSeries, totalCost } = costsSimulator(data, seriesLenght, mode);
 
   return (
     <>
@@ -53,13 +52,20 @@ export default function Home() {
             <AddPurchase lastDate={lastDate} addPurchase={addPurchase} />
           </CardContent>
         </Card>
-        <Card className="w-[500px] flex flex-col justify-between m-4">
-          <CardHeader>
+        <Card className="w-[500px] flex flex-col justify-around p-8 m-4">
+          <CardTitle>
+            Average CO2 consumption per person {countriesEmissionsPp[country]}{" "}
+            tons
+          </CardTitle>
+          {totalCost > 0 && (
+            <CardTitle>Total cost for neutral Carbon ${totalCost}</CardTitle>
+          )}
+          {offSetSeries && (
             <CardTitle>
-              Average CO2 consumption per person {countriesEmissionsPp[country]}{" "}
-              tons
+              Date to achieve neutrality{" "}
+              {offSetSeries[offSetSeries.length - 1].date}
             </CardTitle>
-          </CardHeader>
+          )}
         </Card>
       </div>
       <Card>

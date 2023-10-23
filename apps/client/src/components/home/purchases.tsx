@@ -21,7 +21,7 @@ const Purchases = ({ data, deletePurchase }: purchasesProps) => {
 
   return (
     <Table>
-      <TableCaption>Total {totalTrees}</TableCaption>
+      <TableCaption>Total {totalTrees} trees</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[200px]">Date</TableHead>

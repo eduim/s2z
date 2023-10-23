@@ -51,3 +51,19 @@ export type offSetSeries = {
   date: string;
   total: number;
 };
+
+export type simulationResponseType = {
+  simulation: simulationType;
+};
+
+export type simulationType = {
+  country: countryCodeType;
+  mode: simulationModeType;
+  offSet: offSetSeries[];
+  costs: costsSeries;
+};
+
+export type costsSeries = {
+  costsSeries: offSetSeries[];
+  totalCost: number;
+};

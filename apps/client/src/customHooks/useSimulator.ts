@@ -1,11 +1,14 @@
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   countryCodeType,
   simulationModeType,
   simulatorDataType,
   simulatorActionType,
   formInputs,
+  simulationResponseType,
+  simulationType,
 } from "@/types";
+import API from "@/lib/api";
 
 const initialData: simulatorDataType = {
   country: "UK",
@@ -74,6 +77,11 @@ const reducer = (state: simulatorDataType, action: simulatorActionType) => {
 
 const useSimulator = () => {
   const [{ data, country, mode }, dispatch] = useReducer(reducer, initialData);
+  const [simulation, setSimulation] = useState<simulationType | undefined>();
+
+  useEffect(() => {
+    calculateSimulation();
+  }, [data, country, mode]);
 
   const addPurchase = (formData: formInputs) => {
     dispatch({ type: "ADD PURCHASE", payload: formData });
@@ -90,6 +98,15 @@ const useSimulator = () => {
     dispatch({ type: "CHANGE COUNTRY", payload: country });
   };
 
+  const calculateSimulation = async () => {
+    const simulation: simulationResponseType = await API.saveSimulation(
+      data,
+      mode,
+      country
+    );
+    setSimulation(simulation.simulation);
+  };
+
   return {
     data,
     country,
@@ -98,6 +115,7 @@ const useSimulator = () => {
     deletePurchase,
     changeCountry,
     changeMode,
+    simulation,
   };
 };
 

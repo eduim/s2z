@@ -47,7 +47,7 @@ export const offsetSimulator = (
   let currentDate = parseDateStringToDate(data[0].date.toString());
   const offSetSeries = [];
 
-  while (offSetCarbonTotal < consumption) {
+  while (offSetCarbonTotal < consumption * 1000) {
     // calculate for each purchase offset compensation
     const offSetCarbonCurrentDateBatches = data.map((purchase) => {
       const age =
@@ -109,7 +109,8 @@ export const costsSimulator = (
         parseDateStringToDate(purchase.date.toString()).getFullYear();
       let cost = 0;
       if (age === 0 && isAquistionDate) cost = costTree * purchase.trees;
-      if (age > 0) cost = maintenanceTree * purchase.trees;
+      if (age > 0)
+        cost = unitPonderatedMode(mode, maintenanceTree * purchase.trees);
       return {
         date: purchase.date,
         cost,
