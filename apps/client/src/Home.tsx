@@ -1,10 +1,6 @@
 import AddPurchase from "./components/home/addPurchase";
 import useSimulator from "./customHooks/useSimulator";
-import {
-  countriesEmissionsPp,
-  offsetSimulator,
-  costsSimulator,
-} from "./lib/simulator";
+import { countriesEmissionsPp } from "./lib/simulator";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import SelectOptions from "./components/home/selectOptions";
 import Purchases from "./components/home/purchases";
@@ -19,21 +15,10 @@ export default function Home() {
     deletePurchase,
     changeCountry,
     changeMode,
+    simulationState,
   } = useSimulator();
 
   const lastDate = data.length > 0 ? data[data.length - 1].date : new Date();
-
-  const offSetSeries = offsetSimulator(
-    data,
-    countriesEmissionsPp[country],
-    mode
-  );
-
-  let seriesLenght = 0;
-
-  if (offSetSeries) seriesLenght = offSetSeries.length;
-
-  const { costsSeries, totalCost } = costsSimulator(data, seriesLenght, mode);
 
   return (
     <>
@@ -57,13 +42,15 @@ export default function Home() {
             Average CO2 consumption per person {countriesEmissionsPp[country]}{" "}
             tons
           </CardTitle>
-          {totalCost > 0 && (
-            <CardTitle>Total cost for neutral Carbon ${totalCost}</CardTitle>
+          {simulationState?.costs.totalCost && (
+            <CardTitle>
+              Total cost for neutral Carbon ${simulationState?.costs.totalCost}
+            </CardTitle>
           )}
-          {offSetSeries && (
+          {simulationState && simulationState.offSet.length > 0 && (
             <CardTitle>
               Date to achieve neutrality{" "}
-              {offSetSeries[offSetSeries.length - 1].date}
+              {simulationState.offSet[simulationState.offSet.length - 1].date}
             </CardTitle>
           )}
         </Card>
@@ -73,8 +60,8 @@ export default function Home() {
           <Purchases data={data} deletePurchase={deletePurchase} />
         </CardContent>
       </Card>
-      {offSetSeries && <Graph data={offSetSeries} />}
-      {costsSeries.length > 0 && <Graph data={costsSeries} />}
+      {simulationState && <Graph data={simulationState.offSet} />}
+      {simulationState && <Graph data={simulationState.costs.costsSeries} />}
     </>
   );
 }

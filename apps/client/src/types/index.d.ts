@@ -57,6 +57,7 @@ export type simulationResponseType = {
 };
 
 export type simulationType = {
+  id: number;
   country: countryCodeType;
   mode: simulationModeType;
   offSet: offSetSeries[];

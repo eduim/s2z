@@ -14,9 +14,9 @@ export const getDateString = (date: Date | string) => {
 };
 
 export const errorMatch = (error: string) => {
-  if (error === "max") return "Max number input exceeded";
+  if (error === "max") return "Max number trees input exceeded";
   if (error === "required") return "Required number as input";
-  if (error === "min") return "Min number required input 1";
+  if (error === "min") return "Min number trees required input 1";
   return "Error";
 };
 

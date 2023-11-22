@@ -77,12 +77,42 @@ const reducer = (state: simulatorDataType, action: simulatorActionType) => {
 
 const useSimulator = () => {
   const [{ data, country, mode }, dispatch] = useReducer(reducer, initialData);
-  const [simulation, setSimulation] = useState<simulationType | undefined>();
+  const [simulationState, setSimulationState] = useState<
+    simulationType | undefined
+  >();
 
   useEffect(() => {
     calculateSimulation();
   }, [data, country, mode]);
 
+  const calculateSimulation = async () => {
+    if (!simulationState && data.length === 0) return;
+    if (!simulationState) {
+      const { simulation }: simulationResponseType = await API.saveSimulation(
+        data,
+        mode,
+        country
+      );
+
+      setSimulationState(simulation);
+      return;
+    }
+    if (simulationState && data.length !== 0) {
+      const { simulation }: simulationResponseType = await API.updateSimulation(
+        simulationState.id,
+        data,
+        mode,
+        country
+      );
+      setSimulationState(simulation);
+      return;
+    }
+    setSimulationState({
+      ...simulationState,
+      offSet: [],
+      costs: { totalCost: 0, costsSeries: [] },
+    });
+  };
   const addPurchase = (formData: formInputs) => {
     dispatch({ type: "ADD PURCHASE", payload: formData });
   };
@@ -98,15 +128,6 @@ const useSimulator = () => {
     dispatch({ type: "CHANGE COUNTRY", payload: country });
   };
 
-  const calculateSimulation = async () => {
-    const simulation: simulationResponseType = await API.saveSimulation(
-      data,
-      mode,
-      country
-    );
-    setSimulation(simulation.simulation);
-  };
-
   return {
     data,
     country,
@@ -115,7 +136,7 @@ const useSimulator = () => {
     deletePurchase,
     changeCountry,
     changeMode,
-    simulation,
+    simulationState,
   };
 };
 
