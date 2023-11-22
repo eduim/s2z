@@ -1,4 +1,4 @@
-import { simulationModeType } from '../types'
+import { simulationModeType } from '@types'
 
 export const getDateString = (date: Date | string) => {
   if (typeof date === 'string') return date

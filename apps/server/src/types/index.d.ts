@@ -41,3 +41,7 @@ export type costsSeries = {
   costsSeries: offSetSeries[]
   totalCost: number
 }
+
+export interface authRequest extends Request {
+  userId: number
+}

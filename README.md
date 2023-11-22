@@ -37,7 +37,7 @@ npm run test
 - Tailwind CSS
 - Docker to run databases (test and dev)
 - TypeScript
-- PrismaORM to manage databases
+- PrismaORM to manage the database and models
 
 ## Learnings
 

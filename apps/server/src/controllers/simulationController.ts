@@ -11,13 +11,13 @@ import {
   countriesEmissionsPp,
   offsetSimulator,
 } from '../lib/simulator'
+
 import Simulation from '../models/simulationModel'
 
 const SimulationController = {
   async createSimulation(req: Request, res: Response, next: NextFunction) {
     try {
       const { data, mode, country } = req.body
-
       if (
         (data as purchaseData[]) &&
         (mode as simulationModeType) &&

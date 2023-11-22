@@ -1,4 +1,4 @@
-import { purchaseData, simulationModeType } from '../types'
+import { purchaseData, simulationModeType } from '@types'
 import {
   addDateInterval,
   parseDateStringToDate,

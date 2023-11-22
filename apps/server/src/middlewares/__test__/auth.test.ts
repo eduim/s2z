@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { test, describe, expect, beforeEach, jest } from '@jest/globals'
 import userAuthorizationMiddleware from '../user-auth'
-import { generateToken } from '../../lib/auth'
-
-interface authRequest extends Request {
-  userId: number
-}
+import { generateToken } from '@lib/auth'
+import { authRequest } from '@types'
 
 describe('Auth middleware', () => {
   let mockRequest: Partial<authRequest>
@@ -22,6 +19,7 @@ describe('Auth middleware', () => {
       userId: undefined,
     }
     mockResponse = {
+      status: jest.fn().mockReturnThis() as any,
       json: jest.fn() as any,
     }
   })

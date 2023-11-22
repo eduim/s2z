@@ -2,7 +2,8 @@ import request from 'supertest'
 import startServer from '../app'
 import { Server } from 'http'
 import { describe, test, expect, beforeAll, afterAll } from '@jest/globals'
-import { offSet, costs } from '../lib/data_test'
+import { offSet, costs } from '@lib/data_test'
+
 describe('/simulation', () => {
   let app: Server
   beforeAll(() => {
